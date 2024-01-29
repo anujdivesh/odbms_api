@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
     const Project = sequelize.define("project", {
       project_code: {
         type: Sequelize.STRING,
-        primaryKey: true,
         allowNull: false, // Disallow null values
       validate: {
         notEmpty: true, // Ensure the value is not an empty string

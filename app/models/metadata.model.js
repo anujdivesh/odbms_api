@@ -44,7 +44,7 @@ module.exports = (sequelize, Sequelize) => {
     project_id:{
         type: Sequelize.STRING,
         notNull: true,
-        defaultValue:"COSPPAC"
+        defaultValue:"1"
         },
     publisher_id:{
         type: Sequelize.INTEGER,

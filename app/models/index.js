@@ -89,7 +89,7 @@ db.metadata.belongsToMany(db.flag, {
   otherKey: "flag_id"
 });
 
-
+/*
 db.country.belongsToMany(db.project, {
   through: "project_country",
   foreignKey: "country_id",
@@ -101,7 +101,7 @@ db.project.belongsToMany(db.country, {
   foreignKey: "project_id",
   otherKey: "country_id"
 });
-
+*/
 
 
 db.tag.belongsToMany(db.metadata, {
@@ -194,8 +194,8 @@ db.metadata.belongsTo(db.spatial_projection, {foreignKey: 'spatial_projection_id
 db.license.hasOne(db.metadata, {foreignKey: 'license_id'});
 db.metadata.belongsTo(db.license, {foreignKey: 'license_id'});
 
-db.project.hasOne(db.metadata, {foreignKey: 'project_id'});
-db.metadata.belongsTo(db.project, {foreignKey: 'project_id'});
+db.project.hasOne(db.metadata, {foreignKey: 'project_idx'});
+db.metadata.belongsTo(db.project, {foreignKey: 'project_idx'});
 
 db.organization.hasOne(db.metadata, {foreignKey: 'publisher_id'});
 db.metadata.belongsTo(db.organization, {foreignKey: 'publisher_id'});

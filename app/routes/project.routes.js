@@ -24,15 +24,15 @@ module.exports = app => {
       controller.findOrCreate
     );
     app.get(
-      "/api/project/:project_code",
+      "/api/project/:id",
       controller.findOne
     );
     app.put(
-      "/api/project/:project_code",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/project/:id",[authJwt.verifyToken, authJwt.isAdmin],
       controller.update
     );
     app.delete(
-      "/api/project/:project_code",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/project/:id",[authJwt.verifyToken, authJwt.isAdmin],
       controller.destroy
     );
   };
