@@ -46,7 +46,7 @@ exports.getListing = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -176,7 +176,7 @@ exports.getListingTitle = async(req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
         required:false,
       },
       {
@@ -311,7 +311,7 @@ exports.getListingTitleauth = async(req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
         required:false,
       },
       {
@@ -405,7 +405,7 @@ exports.getListingauth = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -496,7 +496,7 @@ exports.getListingauthchecked = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -588,7 +588,7 @@ exports.getListingauthrestricted = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -680,7 +680,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -771,7 +771,7 @@ exports.getListingidauth = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -864,7 +864,7 @@ exports.getListingASC = (req, res) => {
         },
         {
           model: Project,
-          attributes: ['project_code','project_name'],
+          attributes: ['id','project_code','project_name'],
         },
         {
           model: Organization,
@@ -954,7 +954,7 @@ exports.getListingASCauth = (req, res) => {
       },
       {
         model: Project,
-        attributes: ['project_code','project_name'],
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: Organization,
@@ -1592,7 +1592,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: Project,
-              attributes: ['project_code','project_name'],
+              attributes: ['id','project_code','project_name'],
             },
             {
               model: Organization,
@@ -1821,7 +1821,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: Project,
-              attributes: ['project_code','project_name'],
+              attributes: ['id','project_code','project_name'],
             },
             {
               model: Organization,
@@ -2015,7 +2015,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: Project,
-              attributes: ['project_code','project_name'],
+              attributes: ['id','project_code','project_name'],
             },
             {
               model: Organization,
@@ -2201,7 +2201,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: Project,
-              attributes: ['project_code','project_name'],
+              attributes: ['id','project_code','project_name'],
             },
             {
               model: Organization,

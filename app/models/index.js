@@ -194,8 +194,8 @@ db.metadata.belongsTo(db.spatial_projection, {foreignKey: 'spatial_projection_id
 db.license.hasOne(db.metadata, {foreignKey: 'license_id'});
 db.metadata.belongsTo(db.license, {foreignKey: 'license_id'});
 
-db.project.hasOne(db.metadata, {foreignKey: 'project_idx'});
-db.metadata.belongsTo(db.project, {foreignKey: 'project_idx'});
+db.project.hasOne(db.metadata, {foreignKey: 'project_id'});
+db.metadata.belongsTo(db.project, {foreignKey: 'project_id'});
 
 db.organization.hasOne(db.metadata, {foreignKey: 'publisher_id'});
 db.metadata.belongsTo(db.organization, {foreignKey: 'publisher_id'});
