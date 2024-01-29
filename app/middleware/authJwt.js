@@ -64,6 +64,28 @@ isRegistered = (req, res, next) => {
   });
 };
 
+isRegisteredOrAdmin = (req, res, next) => {
+  User.findByPk(req.userId).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "registered") {
+          next();
+          return;
+        }
+
+        if (roles[i].name === "admineyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJlbWFpbCI6Im") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Require Registered user or Admin Role!"
+      });
+    });
+  });
+};
+
 isModeratorOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -90,6 +112,7 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isRegistered: isRegistered,
-  isModeratorOrAdmin: isModeratorOrAdmin
+  isModeratorOrAdmin: isModeratorOrAdmin,
+  isRegisteredOrAdmin : isRegisteredOrAdmin
 };
 module.exports = authJwt;

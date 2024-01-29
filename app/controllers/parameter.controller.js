@@ -26,12 +26,14 @@ exports.findAll = (req, res) => {
 exports.findOrCreate = (req, res) => {
   return Parameter.findOrCreate({
     where:{
-      abbrev:req.body.abbrev
+      short_name:req.body.short_name
     },
     defaults:{
-      abbrev: req.body.abbrev,
-      name: req.body.name,
-      unit: req.body.unit
+      short_name: req.body.short_name,
+      standard_name: req.body.standard_name,
+      long_name: req.body.long_name,
+      units: req.body.units,
+      uri: req.body.uri
     }
   })
     .then(data => {
@@ -53,7 +55,7 @@ exports.findOrCreate = (req, res) => {
 
 exports.findOne = (req, res) => {
 
-  const countryId = req.params.abbrev
+  const countryId = req.params.short_name
   return Parameter.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
@@ -72,7 +74,7 @@ exports.findOne = (req, res) => {
 exports.update = async(req, res) => {
 
   try{
-    const countryId = req.params.abbrev;
+    const countryId = req.params.short_name;
     const cont = await Parameter.findByPk(countryId);
   
     if (!cont) {
@@ -84,8 +86,8 @@ exports.update = async(req, res) => {
       if (req.body.name != null){
       cont.name = req.body.name
       }
-      if (req.body.unit != null){
-        cont.unit = req.body.unit
+      if (req.body.units != null){
+        cont.units = req.body.units
         }
     await cont.save();
   
@@ -102,7 +104,7 @@ exports.update = async(req, res) => {
 };
 
 exports.destroy = (req,res) => {
-  const countryId = req.params.abbrev
+  const countryId = req.params.short_name
   console.log(countryId)
   return Parameter.findByPk(countryId)
     .then((countryId) => {
@@ -110,7 +112,7 @@ exports.destroy = (req,res) => {
         return res.status(404).send({ message: "Parameter Not found." });
       }
       else{
-        Parameter.destroy({where:{abbrev:req.params.abbrev}});
+        Parameter.destroy({where:{short_name:req.params.short_name}});
         res.status(200).send({ message: "Parameter deleted!" });
       }
     })

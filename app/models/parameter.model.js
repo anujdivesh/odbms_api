@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Parameter = sequelize.define("parameter", {
-      abbrev: {
+      short_name: {
         type: Sequelize.STRING,
         primaryKey: true,
         allowNull: false, // Disallow null values
@@ -8,20 +8,34 @@ module.exports = (sequelize, Sequelize) => {
         notEmpty: true, // Ensure the value is not an empty string
       }
       },
-      name: {
+      standard_name: {
         type:Sequelize.STRING,
         allowNull: false,
         validate: {
           notEmpty: true, // Ensure the value is not an empty string
         }
       },
-      unit: {
+      long_name: {
         type:Sequelize.STRING,
         allowNull: false,
         validate: {
           notEmpty: true, // Ensure the value is not an empty string
         }
       },
+      units: {
+        type:Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true, // Ensure the value is not an empty string
+        }
+      },
+      uri: {
+        type:Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true, // Ensure the value is not an empty string
+        }
+      }
     });  
     return Parameter;
   };

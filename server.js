@@ -59,6 +59,7 @@ require('./app/routes/defineextent.routes')(app);
 require('./app/routes/defineurl.routes')(app);
 require('./app/routes/contact.routes')(app);
 require('./app/routes/parameter.routes')(app);
+require('./app/routes/request.routes')(app);
 
 
 // set port, listen for requests

@@ -1,27 +1,23 @@
 module.exports = (sequelize, Sequelize) => {
-    const Contact = sequelize.define("contact", {
-      first_name: {
+    const Request = sequelize.define("request", {
+      user_request_id: {
         type: Sequelize.STRING,
         allowNull: false, // Disallow null values
       validate: {
         notEmpty: true, // Ensure the value is not an empty string
       }
       },
-      last_name: {
+      status: {
         type: Sequelize.STRING
       },
-      position: {
+      comments: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false, // Disallow null values
-      validate: {
-        notEmpty: true, // Ensure the value is not an empty string
-      }
+      download_link: {
+        type: Sequelize.STRING
       }
     });
   
-    return Contact;
+    return Request;
   };
   

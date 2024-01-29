@@ -10,10 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       description: {
         type: Sequelize.STRING
       },
-      temportal_coverage_from: {
+      temporal_coverage_from: {
         type: Sequelize.DATE
       },
-      temportal_coverage_to: {
+      temporal_coverage_to: {
         type: Sequelize.DATE
       },
       language: {

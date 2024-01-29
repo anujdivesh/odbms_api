@@ -17,7 +17,7 @@ const Sequelize = db.Sequelize.Sequelize;
 // Retrieve all Tutorials from the database.
 exports.getListing = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{is_checked:true},
     include: [
@@ -27,7 +27,7 @@ exports.getListing = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -54,7 +54,7 @@ exports.getListing = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -110,7 +110,7 @@ exports.getListingTitle = async(req, res) => {
   console.log('-------------------------')
   console.log(req.body.title)
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{is_checked:true, 
       [Op.or]: [
@@ -126,7 +126,7 @@ exports.getListingTitle = async(req, res) => {
           }
         },
         {
-          '$parameters.abbrev$': {
+          '$parameters.short_name$': {
             [Op.in]: req.body.parameters // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
@@ -155,7 +155,7 @@ exports.getListingTitle = async(req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         required:false,
         through:{ attributes:[]}
       },
@@ -185,7 +185,7 @@ exports.getListingTitle = async(req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -245,7 +245,7 @@ exports.getListingTitleauth = async(req, res) => {
   console.log('-------------------------')
   console.log(req.body.title)
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{
       [Op.or]: [
@@ -261,7 +261,7 @@ exports.getListingTitleauth = async(req, res) => {
           }
         },
         {
-          '$parameters.abbrev$': {
+          '$parameters.short_name$': {
             [Op.in]: req.body.parameters // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
@@ -290,7 +290,7 @@ exports.getListingTitleauth = async(req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         required:false,
         through:{ attributes:[]}
       },
@@ -320,7 +320,7 @@ exports.getListingTitleauth = async(req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -377,7 +377,7 @@ exports.getListingTitleauth = async(req, res) => {
 
 exports.getListingauth = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     include: [
       {
@@ -386,7 +386,7 @@ exports.getListingauth = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -413,7 +413,7 @@ exports.getListingauth = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -467,7 +467,7 @@ exports.getListingauth = (req, res) => {
 };
 exports.getListingauthchecked = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where: {is_checked: req.params.is_checked},
     include: [
@@ -477,7 +477,7 @@ exports.getListingauthchecked = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -504,7 +504,7 @@ exports.getListingauthchecked = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -559,7 +559,7 @@ exports.getListingauthchecked = (req, res) => {
 
 exports.getListingauthrestricted = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where: {is_restricted: req.params.is_restricted},
     include: [
@@ -569,7 +569,7 @@ exports.getListingauthrestricted = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -596,7 +596,7 @@ exports.getListingauthrestricted = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -651,7 +651,7 @@ exports.getListingauthrestricted = (req, res) => {
 
 exports.getListingid = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{is_checked:true, id:req.params.id},
     include: [
@@ -661,7 +661,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -688,7 +688,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -742,7 +742,7 @@ exports.getListingid = (req, res) => {
 };
 exports.getListingidauth = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{id:req.params.id},
     include:[
@@ -752,7 +752,7 @@ exports.getListingidauth = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -779,7 +779,7 @@ exports.getListingidauth = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -835,7 +835,7 @@ exports.getListingidauth = (req, res) => {
 
 exports.getListingASC = (req, res) => {
     MetaData.findAll({
-      attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+      attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
       order: [['createdAt', req.params.orderby]], // Assuming createdAt is the timestamp of creation
       where:{is_checked:true},
       include: [
@@ -845,7 +845,7 @@ exports.getListingASC = (req, res) => {
         },
         {
           model: db.parameter,
-          attributes: ['abbrev','name','unit'],
+          attributes: ['short_name','standard_name','long_name','units','uri'],
           through:{ attributes:[]}
         },
         {
@@ -872,7 +872,7 @@ exports.getListingASC = (req, res) => {
         },
         {
           model: db.contact,
-          attributes: ['id','first_name','last_name','designation','email'],
+          attributes: ['id','first_name','last_name','position','email'],
         },
         {
           model: db.user,
@@ -926,7 +926,7 @@ exports.getListingASC = (req, res) => {
 };
 exports.getListingASCauth = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', req.params.orderby]], // Assuming createdAt is the timestamp of creation
     include: [
       {
@@ -935,7 +935,7 @@ exports.getListingASCauth = (req, res) => {
       },
       {
         model: db.parameter,
-        attributes: ['abbrev','name','unit'],
+        attributes: ['short_name','standard_name','long_name','units','uri'],
         through:{ attributes:[]}
       },
       {
@@ -962,7 +962,7 @@ exports.getListingASCauth = (req, res) => {
       },
       {
         model: db.contact,
-        attributes: ['id','first_name','last_name','designation','email'],
+        attributes: ['id','first_name','last_name','position','email'],
       },
       {
         model: db.user,
@@ -1051,7 +1051,7 @@ exports.findOrCreate = async(req, res) => {
   const checker = await MetaData.findAll({
     where:{ 
       title: req.body.title,
-      temportal_coverage_from:req.body.temportal_coverage_from
+      temporal_coverage_from:req.body.temporal_coverage_from
      
     },
     include: [
@@ -1072,7 +1072,7 @@ exports.findOrCreate = async(req, res) => {
     myarr.push(req.body.extents[i]['name'])
     myarr.push(req.body.extents[i]['value'])
   }
- // console.log(myarr)
+  console.log(myarr)
   var duplicate = hasDuplicates(myarr);
   var duplicate_msg ="";
   if (duplicate == true){
@@ -1136,8 +1136,8 @@ exports.findOrCreate = async(req, res) => {
   MetaData.create({
     title: req.body.title,
     description:req.body.description,
-    temportal_coverage_from: req.body.temportal_coverage_from,
-    temportal_coverage_to:req.body.temportal_coverage_to,
+    temporal_coverage_from: req.body.temporal_coverage_from,
+    temporal_coverage_to:req.body.temporal_coverage_to,
     rights: req.body.rights,
     language: req.body.language,
     version: req.body.version,
@@ -1338,8 +1338,8 @@ exports.findOrCreate = async(req, res) => {
       metadata.title = req.body.title;
     }
     metadata.description = req.body.description;
-    metadata.temportal_coverage_from = req.body.temportal_coverage_from;
-    metadata.temportal_coverage_to = req.body.temportal_coverage_to;
+    metadata.temporal_coverage_from = req.body.temporal_coverage_from;
+    metadata.temporal_coverage_to = req.body.temporal_coverage_to;
     metadata.rights = req.body.rights;
     metadata.language = req.body.language;
     metadata.version = req.body.version;
@@ -1563,7 +1563,7 @@ exports.findOrCreate = async(req, res) => {
       }
       else{
         MetaData.findAll({
-          attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+          attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
           where:{id:bigarray, is_checked:true},
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
@@ -1573,7 +1573,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.parameter,
-              attributes: ['abbrev','name','unit'],
+              attributes: ['short_name','standard_name','long_name','units','uri'],
               through:{ attributes:[]}
             },
             {
@@ -1600,7 +1600,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.contact,
-              attributes: ['id','first_name','last_name','designation','email'],
+              attributes: ['id','first_name','last_name','position','email'],
             },
             {
               model: db.user,
@@ -1792,7 +1792,7 @@ exports.findOrCreate = async(req, res) => {
       }
       else{
         MetaData.findAll({
-          attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+          attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
           where:{id:bigarray},
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
@@ -1802,7 +1802,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.parameter,
-              attributes: ['abbrev','name','unit'],
+              attributes: ['short_name','standard_name','long_name','units','uri'],
               through:{ attributes:[]}
             },
             {
@@ -1829,7 +1829,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.contact,
-              attributes: ['id','first_name','last_name','designation','email'],
+              attributes: ['id','first_name','last_name','position','email'],
             },
             {
               model: db.user,
@@ -1986,7 +1986,7 @@ exports.findOrCreate = async(req, res) => {
       }
       else{
         MetaData.findAll({
-          attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+          attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
           where:{id:maxy_arr,is_checked:true},
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
@@ -1996,7 +1996,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.parameter,
-              attributes: ['abbrev','name','unit'],
+              attributes: ['short_name','standard_name','long_name','units','uri'],
               through:{ attributes:[]}
             },
             {
@@ -2023,7 +2023,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.contact,
-              attributes: ['id','first_name','last_name','designation','email'],
+              attributes: ['id','first_name','last_name','position','email'],
             },
             {
               model: db.user,
@@ -2172,7 +2172,7 @@ exports.findOrCreate = async(req, res) => {
       }
       else{
         MetaData.findAll({
-          attributes: ['id','title','description','temportal_coverage_from','temportal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+          attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
           where:{id:maxy_arr},
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
@@ -2182,7 +2182,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.parameter,
-              attributes: ['abbrev','name','unit'],
+              attributes: ['short_name','standard_name','long_name','units','uri'],
               through:{ attributes:[]}
             },
             {
@@ -2209,7 +2209,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.contact,
-              attributes: ['id','first_name','last_name','designation','email'],
+              attributes: ['id','first_name','last_name','position','email'],
             },
             {
               model: db.user,

@@ -42,6 +42,7 @@ db.defineextent = require("../models/defineextent.model.js")(sequelize, Sequeliz
 db.defineurl = require("../models/defineurl.model.js")(sequelize, Sequelize);
 db.contact = require("../models/contact.model.js")(sequelize, Sequelize);
 db.parameter = require("../models/parameter.model.js")(sequelize, Sequelize);
+db.request = require("../models/request.model.js")(sequelize, Sequelize);
 db.flag = require("../models/flag.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
@@ -164,6 +165,19 @@ db.metadata.belongsToMany(db.parameter, {
   through: "metadata_parameter",
   foreignKey: "metadata_id",
   otherKey: "parameter_id"
+});
+
+
+db.metadata.belongsToMany(db.request, {
+  through: "metadata_request",
+  foreignKey: "metadata_id",
+  otherKey: "request_id"
+});
+
+db.request.belongsToMany(db.metadata, {
+  through: "metadata_request",
+  foreignKey: "request_id",
+  otherKey: "metadata_id"
 });
 
 

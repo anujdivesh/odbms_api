@@ -32,7 +32,7 @@ exports.findOrCreate = (req, res) => {
       defaults:{
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        designation:req.body.designation,
+        position:req.body.position,
         email: req.body.email
       }
     })
@@ -89,8 +89,8 @@ exports.update = async(req, res) => {
       if (req.body.last_name != null){
         cont.last_name = req.body.last_name
         }
-        if (req.body.designation != null){
-          cont.designation = req.body.designation
+        if (req.body.position != null){
+          cont.position = req.body.position
           }
           if (req.body.email != null){
             cont.email = req.body.email
