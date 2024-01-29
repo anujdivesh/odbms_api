@@ -25,15 +25,15 @@ module.exports = app => {
       controller.findOrCreate,
     );
     app.get(
-      "/api/parameter/:abbrev",
+      "/api/parameter/:short_name",
       parameter.findOne
     );
     app.put(
-      "/api/parameter/:abbrev",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/parameter/:short_name",[authJwt.verifyToken, authJwt.isAdmin],
       controller.update
     );
     app.delete(
-      "/api/parameter/:abbrev",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/parameter/:short_name",[authJwt.verifyToken, authJwt.isAdmin],
       controller.destroy
     );
   };
