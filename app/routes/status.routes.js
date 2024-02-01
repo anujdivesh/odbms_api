@@ -1,6 +1,6 @@
 
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/datatype.controller");
+const controller = require("../controllers/status.controller");
 module.exports = app => {
   app.use(function(req, res, next) {
     res.header(
@@ -9,29 +9,30 @@ module.exports = app => {
     );
     next();
   });
-    const datatype = require("../controllers/datatype.controller.js");
+  
+    const status = require("../controllers/status.controller.js");
   
     var router = require("express").Router();
   
     // Retrieve all Tutorials
-    router.get("/", datatype.findAll);
+    router.get("/", status.findAll);
   
-    app.use('/api/datatypes', router);
+    app.use('/api/status', router);
 
     app.post(
-      "/api/datatype/add",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/status/add",[authJwt.verifyToken, authJwt.isAdmin],
       controller.findOrCreate
     );
     app.get(
-      "/api/datatype/:id",
+      "/api/status/:id",
       controller.findOne
     );
     app.put(
-      "/api/datatype/:id",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/status/:id",[authJwt.verifyToken, authJwt.isAdmin],
       controller.update
     );
     app.delete(
-      "/api/datatype/:id",[authJwt.verifyToken, authJwt.isAdmin],
+      "/api/status/:id",[authJwt.verifyToken, authJwt.isAdmin],
       controller.destroy
     );
   };

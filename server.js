@@ -60,6 +60,7 @@ require('./app/routes/defineurl.routes')(app);
 require('./app/routes/contact.routes')(app);
 require('./app/routes/parameter.routes')(app);
 require('./app/routes/request.routes')(app);
+require('./app/routes/status.routes')(app);
 
 
 // set port, listen for requests

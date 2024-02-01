@@ -108,7 +108,19 @@ exports.getListing = (req, res) => {
 };
 exports.getListingTitle = async(req, res) => {
   console.log('-------------------------')
-  console.log(req.body.title)
+  var topic_arr=[]
+  if (req.body.topic_ids != null){
+    topic_arr = req.body.topic_ids;
+  }
+  var tag_arr=[]
+  if (req.body.tag_ids != null){
+    tag_arr = req.body.tag_ids;
+  }
+  var param_arr=[]
+  if (req.body.parameters != null){
+    param_arr = req.body.parameters;
+  }
+  console.log(tag_arr)
   MetaData.findAll({
     attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
@@ -127,22 +139,22 @@ exports.getListingTitle = async(req, res) => {
         },
         {
           '$parameters.short_name$': {
-            [Op.in]: req.body.parameters // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: param_arr // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
-          '$project.project_code$': {
-            [Op.like]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
+          '$project.id$': {
+            [Op.eq]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
           '$tags.id$': {
-            [Op.in]: req.body.tag_ids // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: tag_arr // Condition 2: Posts with tixtles containing 'JavaScript'
           }
         },
         {
           '$topics.id$': {
-            [Op.in]: req.body.topic_ids // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: topic_arr // Condition 2: Posts with titles containing 'JavaScript'
           }
         }
       ]
@@ -243,7 +255,18 @@ exports.getListingTitle = async(req, res) => {
 
 exports.getListingTitleauth = async(req, res) => {
   console.log('-------------------------')
-  console.log(req.body.title)
+  var topic_arr=[]
+  if (req.body.topic_ids != null){
+    topic_arr = req.body.topic_ids;
+  }
+  var tag_arr=[]
+  if (req.body.tag_ids != null){
+    tag_arr = req.body.tag_ids;
+  }
+  var param_arr=[]
+  if (req.body.parameters != null){
+    param_arr = req.body.parameters;
+  }
   MetaData.findAll({
     attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
@@ -262,22 +285,22 @@ exports.getListingTitleauth = async(req, res) => {
         },
         {
           '$parameters.short_name$': {
-            [Op.in]: req.body.parameters // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: param_arr // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
-          '$project.project_code$': {
-            [Op.like]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
+          '$project.id$': {
+            [Op.eq]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
           '$tags.id$': {
-            [Op.in]: req.body.tag_ids // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: tag_arr // Condition 2: Posts with tixtles containing 'JavaScript'
           }
         },
         {
           '$topics.id$': {
-            [Op.in]: req.body.topic_ids // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.in]: topic_arr // Condition 2: Posts with titles containing 'JavaScript'
           }
         }
       ]
@@ -1230,6 +1253,7 @@ exports.findOrCreate = async(req, res) => {
     myarr.push(req.body.extents[i]['name'])
     myarr.push(req.body.extents[i]['value'])
   }
+  
   var duplicate = hasDuplicates(myarr);
   var duplicate_msg ="";
   if (duplicate == true){
@@ -1344,8 +1368,8 @@ exports.findOrCreate = async(req, res) => {
     metadata.language = req.body.language;
     metadata.version = req.body.version;
     metadata.user_created_id = req.body.user_created_id;
-    if(req.body.datatypeid != null){
-      metadata.datatypeid = req.body.datatypeid;
+    if(req.body.data_type != null){
+      metadata.datatype = req.body.data_type;
     }
     if(req.body.spatial_projection_id != null ){
       metadata.spatial_projection_id = req.body.spatial_projection_id;
@@ -1401,8 +1425,9 @@ exports.findOrCreate = async(req, res) => {
         if(req.body.contact_id != null ){
         metadata.setContact(req.body.contact_id);
         }
-        if (req.body.country !=null){
-          metadata.setCountries(req.body.country);
+        console.log(req.body.countries)
+        if (req.body.countries !=null){
+          metadata.setCountries(req.body.countries);
         }
         if (req.body.tag != null){
         metadata.setTags(req.body.tag);
@@ -1414,11 +1439,18 @@ exports.findOrCreate = async(req, res) => {
           metadata.setFlags(req.body.flag);
         }
         if (req.body.parameters !=null){
+
+        try{
           metadata.setParameters(req.body.parameters);
         }
+        catch(err){
+            res.status(500).json({ message: 'Please pass in all the required paramters.'+duplicate_msg });
+          
+          }
+        }
     await metadata.save();
-
     res.status(200).send({ message: "Metadata updated successfully!" });
+        
       }
       else{
         res.status(404).json({ message: duplicate_msg });
@@ -1426,7 +1458,7 @@ exports.findOrCreate = async(req, res) => {
     }
   }
   catch(err){
-    console.log(err)
+  //  console.log(err)
     res.status(500).json({ message: 'Please pass in all the required paramters.'+duplicate_msg });
   }
   

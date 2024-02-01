@@ -49,7 +49,7 @@ exports.findOrCreate = (req, res) => {
 
 exports.findOne = (req, res) => {
 
-  const countryId = req.params.short_name
+  const countryId = req.params.id;
   return Organization.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
@@ -67,7 +67,7 @@ exports.findOne = (req, res) => {
 
 exports.update = async(req, res) => {
   try{
-  const countryId = req.params.short_name;
+  const countryId = req.params.id;
   const org = await Organization.findByPk(countryId);
 
   if (!org) {
@@ -79,6 +79,9 @@ exports.update = async(req, res) => {
     if (req.body.name != null){
     org.name = req.body.name
     }
+    if (req.body.short_name != null){
+      org.short_name = req.body.short_name
+      }
     if (req.body.website != null){
       org.website = req.body.website
       }
@@ -93,14 +96,14 @@ catch(err){
 };
 
 exports.destroy = (req,res) => {
-  const countryId = req.params.short_name
+  const countryId = req.params.id;
   return Organization.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
         return res.status(404).send({ message: "Organization Not found." });
       }
       else{
-        Organization.destroy({where:{short_name:req.params.short_name}});
+        Organization.destroy({where:{id:req.params.id}});
         res.status(200).send({ message: "Organization deleted!" });
       }
     })

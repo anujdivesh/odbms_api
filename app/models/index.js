@@ -44,6 +44,7 @@ db.contact = require("../models/contact.model.js")(sequelize, Sequelize);
 db.parameter = require("../models/parameter.model.js")(sequelize, Sequelize);
 db.request = require("../models/request.model.js")(sequelize, Sequelize);
 db.flag = require("../models/flag.model.js")(sequelize, Sequelize);
+db.status = require("../models/status.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -220,6 +221,9 @@ db.spatial_extent.belongsTo(db.defineextent, {foreignKey: 'extent_name'});
 
 db.defineurl.hasOne(db.sourceurl, {foreignKey: 'url_name'});
 db.sourceurl.belongsTo(db.defineurl, {foreignKey: 'url_name'});
+
+db.status.hasOne(db.request, {foreignKey: 'status_id'});
+db.request.belongsTo(db.status, {foreignKey: 'status_id'});
 
 db.ROLES = ["user", "admineyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJlbWFpbCI6Im", "registered"];
 

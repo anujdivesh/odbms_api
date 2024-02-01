@@ -48,7 +48,7 @@ exports.findOrCreate = (req, res) => {
 
 exports.findOne = (req, res) => {
 
-  const countryId = req.params.datatype_code
+  const countryId = req.params.id
   return datatype.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
@@ -64,48 +64,42 @@ exports.findOne = (req, res) => {
     
 };
 
-exports.update = (req, res) => {
-  const countryId = req.params.datatype_code
-  return datatype.findByPk(countryId)
-    .then((countryId) => {
-      if (!countryId) {
-        return res.status(404).send({ message: "Data type Not found." });
+exports.update = async(req, res) => {
+
+  try{
+    const countryId = req.params.id;
+    const cont = await datatype.findByPk(countryId);
+    console.log(cont)
+    if (!cont) {
+      return res.status(404).json({ message: 'Data Type not found' });
+    }
+    else{
+      if (req.body.datatype_code != null){
+      cont.datatype_code = req.body.datatype_code
       }
-      else{
-        datatype.update(
-          {
-            datatype_name: req.body.datatype_name,
-        },{
-          where:{
-            datatype_code:req.params.datatype_code
-          }
-        })
-          .then(data => {
-            console.log(data)
-            if (data == 1){
-              res.status(200).send({message:'Data type updated.'})
-            }
-            else{
-              res.status(500).send({message:'Data type does not exist.'})
-            }
-        })
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: "An Error Occurred."+err });
-    });
+      if (req.body.datatype_name != null){
+        cont.datatype_name = req.body.datatype_name
+        }
+    await cont.save();
+  
+    res.status(200).send({ message: "Data Type updated successfully!" });
+    }
+  }
+  catch(err){
+    res.status(500).json({ message: 'Please pass in all the required paramters.' });
+  }
 
 };
 
 exports.destroy = (req,res) => {
-  const countryId = req.params.datatype_code
+  const countryId = req.params.id
   return datatype.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
         return res.status(404).send({ message: "Data type Not found." });
       }
       else{
-        datatype.destroy({where:{datatype_code:req.params.datatype_code}});
+        datatype.destroy({where:{id:req.params.id}});
         res.status(200).send({ message: "Data type deleted!" });
       }
     })

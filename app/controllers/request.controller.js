@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Request = db.request;
 const Metadata = db.metadata;
+const Status = db.status;
 const Op = db.Sequelize.Op;
 
 // Retrieve all Tutorials from the database.
@@ -15,6 +16,10 @@ exports.findAll = (req, res) => {
             attributes:['id'],
             through:{ attributes:[]}
           },
+          {
+            model: Status,
+            attributes:['id','name']
+          }
         
         ]
       })
@@ -46,6 +51,10 @@ exports.findAllbyUser = (req, res) => {
         attributes:['id'],
         through:{ attributes:[]}
       },
+      {
+        model: Status,
+        attributes:['id','name']
+      }
     
     ]
   })
@@ -81,9 +90,9 @@ exports.findOrCreate = async(req, res) => {
 
     Request.create({
         user_request_id: req.body.user_request_id,
-        status: req.body.status,
         comments:req.body.comments,
         download_link: req.body.download_link,
+        status_id:req.body.status_id,
       
     })
     .then(async(request) => {
@@ -105,18 +114,36 @@ exports.findOrCreate = async(req, res) => {
 
 exports.findOne = (req, res) => {
   const countryId = req.params.id
-  return Request.findByPk(countryId)
-    .then((countryId) => {
-      if (!countryId) {
-        return res.status(404).send({ message: "Request Not found." });
+  Request.findAll({
+    order: [['createdAt', 'DESC']], // Assuming createdAt is the ti
+    where:{id:countryId},
+    include: [
+      {
+        model: Metadata,
+        attributes:['id'],
+        through:{ attributes:[]}
+      },
+      {
+        model: Status,
+        attributes:['id','name']
       }
-      else{
-        res.status(200).send(countryId);
-      }
-    })
-    .catch((err) => {
-      res.status(404).send({ message: "An Error Occurred."+err });
+    
+    ]
+  })
+  .then(metadata => {
+    if (metadata.length==0){
+      res.status(404).send({message:"No Records Found."});
+    }
+    else{
+    res.send(metadata);
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving requests."
     });
+  });
     
 };
 
@@ -149,6 +176,9 @@ exports.update = async(req, res) => {
           if (req.body.download_link != null){
             cont.comments = req.body.download_link
             }
+            if (req.body.status_id != null){
+              cont.status_id = req.body.status_id
+              }
     if (req.body.metadata !=null){
        // cont.setMetadata(["2"])
         cont.setMetadata(req.body.metadata);
@@ -194,6 +224,9 @@ exports.updateadmin = async(req, res) => {
           if (req.body.download_link != null){
             cont.comments = req.body.download_link
             }
+            if (req.body.status_id != null){
+              cont.status_id = req.body.status_id
+              }
     if (req.body.metadata !=null){
        // cont.setMetadata(["2"])
         cont.setMetadata(req.body.metadata);

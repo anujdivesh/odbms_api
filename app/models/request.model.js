@@ -7,15 +7,15 @@ module.exports = (sequelize, Sequelize) => {
         notEmpty: true, // Ensure the value is not an empty string
       }
       },
-      status: {
-        type: Sequelize.STRING
-      },
       comments: {
         type: Sequelize.STRING
       },
       download_link: {
         type: Sequelize.STRING
-      }
+      },
+      status_id:{
+        type: Sequelize.INTEGER
+        },
     });
   
     return Request;

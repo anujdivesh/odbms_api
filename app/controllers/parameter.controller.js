@@ -82,13 +82,21 @@ exports.update = async(req, res) => {
     }
     else{
   
-      //project.short_name = req.body.short_name,
-      if (req.body.name != null){
-      cont.name = req.body.name
+      if (req.body.short_name != null){
+      cont.short_name = req.body.short_name
       }
+      if (req.body.standard_name != null){
+        cont.standard_name = req.body.standard_name
+        }
+        if (req.body.long_name != null){
+          cont.long_name = req.body.long_name
+          }
       if (req.body.units != null){
         cont.units = req.body.units
         }
+        if (req.body.uri != null){
+          cont.uri = req.body.uri
+          }
     await cont.save();
   
     res.status(200).send({ message: "Parameter updated successfully!" });
