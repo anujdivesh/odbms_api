@@ -44,7 +44,7 @@ exports.findAllbyUser = (req, res) => {
     
   Request.findAll({
     order: [['createdAt', 'DESC']], // Assuming createdAt is the ti
-    where:{user_request_id:req.body.user_request_id},
+    where:{user_request_id:req.params.id},
     include: [
       {
         model: Metadata,

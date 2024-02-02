@@ -22,8 +22,6 @@ module.exports = app => {
     app.use('/api/requests', router);
 
 
-    app.post("/api/requestuser", controller.findAllbyUser);
-
     app.post(
       "/api/request/add",[authJwt.verifyToken, authJwt.isRegisteredOrAdmin],
       controller.findOrCreate
@@ -32,6 +30,8 @@ module.exports = app => {
       "/api/request/:id",
       controller.findOne
     );
+
+    app.get("/api/requestuser/:id", controller.findAllbyUser);
     app.put(
       "/api/requestuser/:id",[authJwt.verifyToken, authJwt.isRegisteredOrAdmin],
       controller.update
