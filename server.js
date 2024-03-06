@@ -1,14 +1,20 @@
+var compression = require('compression');
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+var http = require('http');
+var https = require('https');
 
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
 const app = express();
-
+app.use(compression());
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 var corsOptions = {
   origin: "http://localhost:8081"
 };
+app.use(express.static(__dirname + '/public', { maxAge: 31557600 }));
 
 app.use(cors());
 
