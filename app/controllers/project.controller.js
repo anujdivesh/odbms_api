@@ -90,7 +90,7 @@ exports.findOne = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -114,7 +114,7 @@ exports.update = async(req, res) => {
     const cont = await Project.findByPk(countryId);
   
     if (!cont) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(200).json({ message: 'Project not found' });
     }
     else{
       if (req.body.project_code != null){
@@ -141,7 +141,7 @@ exports.destroy = (req,res) => {
   return Project.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Project Not found." });
+        return res.status(200).send({ message: "Project Not found." });
       }
       else{
         Project.destroy({where:{id:req.params.id}});

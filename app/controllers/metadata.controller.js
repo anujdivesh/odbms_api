@@ -93,7 +93,7 @@ exports.getListing = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -238,7 +238,7 @@ exports.getListingTitle = async(req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -384,7 +384,7 @@ exports.getListingTitleauth = async(req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -475,7 +475,7 @@ exports.getListingauth = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -566,7 +566,7 @@ exports.getListingauthchecked = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -658,7 +658,7 @@ exports.getListingauthrestricted = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -750,7 +750,7 @@ exports.getListingid = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -841,7 +841,7 @@ exports.getListingidauth = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -934,7 +934,7 @@ exports.getListingASC = (req, res) => {
     })
     .then(metadata => {
       if (metadata.length==0){
-        res.status(404).send({message:"No Records Found."});
+        res.status(200).send({message:"No Records Found."});
       }
       else{
       res.send(metadata);
@@ -1024,7 +1024,7 @@ exports.getListingASCauth = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -1045,7 +1045,7 @@ exports.deletemetadata = (req,res) => {
   return db.metadata.findByPk(metadataId)
     .then((metadataId) => {
       if (!metadataId) {
-        return res.status(404).send({ message: "Metadata Not found." });
+        return res.status(200).send({ message: "Metadata Not found." });
       }
         db.metadata.destroy({where:{id:req.params.id}});
         res.send({ message: "Metadata deleted!" });
@@ -1216,13 +1216,13 @@ exports.findOrCreate = async(req, res) => {
         res.status(500).send({ message: err.message });
       });}
       else{
-        res.status(404).send({ message: "Metadata Exists!"+duplicate_msg });
+        res.status(200).send({ message: "Metadata Exists!"+duplicate_msg });
       }
       
     }
     catch(err){
       console.log(err)
-      res.status(404).send({ message: "Please specify all the required parameters." });
+      res.status(200).send({ message: "Please specify all the required parameters." });
     }
 };
 
@@ -1243,7 +1243,7 @@ exports.findOrCreate = async(req, res) => {
     });
     try{
     if (!metadata) {
-      return res.status(404).json({ message: 'Metadata not found' });
+      return res.status(200).json({ message: 'Metadata not found' });
     }
     else{
       var duplicate = false;
@@ -1453,7 +1453,7 @@ exports.findOrCreate = async(req, res) => {
         
       }
       else{
-        res.status(404).json({ message: duplicate_msg });
+        res.status(200).json({ message: duplicate_msg });
       }
     }
   }
@@ -1591,7 +1591,7 @@ exports.findOrCreate = async(req, res) => {
         var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
           console.log(bigarray)
       if (bigarray.length == 0) {
-        return res.status(404).json({ message: 'Metadata not found' });
+        return res.status(200).json({ message: 'Metadata not found' });
       }
       else{
         MetaData.findAll({
@@ -1671,7 +1671,7 @@ exports.findOrCreate = async(req, res) => {
         })
         .then(metadata => {
           if (metadata.length==0){
-            res.status(404).send({message:"No Records Found."});
+            res.status(200).send({message:"No Records Found."});
           }
           else{
           res.send(metadata);
@@ -1820,7 +1820,7 @@ exports.findOrCreate = async(req, res) => {
         var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
           console.log(bigarray)
       if (bigarray.length == 0) {
-        return res.status(404).json({ message: 'Metadata not found' });
+        return res.status(200).json({ message: 'Metadata not found' });
       }
       else{
         MetaData.findAll({
@@ -1900,7 +1900,7 @@ exports.findOrCreate = async(req, res) => {
         })
         .then(metadata => {
           if (metadata.length==0){
-            res.status(404).send({message:"No Records Found."});
+            res.status(200).send({message:"No Records Found."});
           }
           else{
           res.send(metadata);
@@ -2014,7 +2014,7 @@ exports.findOrCreate = async(req, res) => {
             }
         
       if (maxy_arr.length == 0) {
-        return res.status(404).json({ message: 'Metadata not found' });
+        return res.status(200).json({ message: 'Metadata not found' });
       }
       else{
         MetaData.findAll({
@@ -2094,7 +2094,7 @@ exports.findOrCreate = async(req, res) => {
         })
         .then(metadata => {
           if (metadata.length==0){
-            res.status(404).send({message:"No Records Found."});
+            res.status(200).send({message:"No Records Found."});
           }
           else{
           res.send(metadata);
@@ -2200,7 +2200,7 @@ exports.findOrCreate = async(req, res) => {
             }
         
       if (maxy_arr.length == 0) {
-        return res.status(404).json({ message: 'Metadata not found' });
+        return res.status(200).json({ message: 'Metadata not found' });
       }
       else{
         MetaData.findAll({
@@ -2280,7 +2280,7 @@ exports.findOrCreate = async(req, res) => {
         })
         .then(metadata => {
           if (metadata.length==0){
-            res.status(404).send({message:"No Records Found."});
+            res.status(200).send({message:"No Records Found."});
           }
           else{
           res.send(metadata);

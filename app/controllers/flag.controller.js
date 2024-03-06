@@ -34,7 +34,7 @@ exports.findOrCreate = (req, res) => {
   })
     .then(data => {
       if (!data) {
-        return res.status(404).send({ message: "Params cannot be empty." });
+        return res.status(200).send({ message: "Params cannot be empty." });
       }
       if (data[1]==true){
         res.status(200).send({message:'Flag Created.'})
@@ -55,7 +55,7 @@ exports.findOne = (req, res) => {
   return Flag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Flag Not found." });
+        return res.status(200).send({ message: "Flag Not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -72,7 +72,7 @@ exports.update = (req, res) => {
   return Flag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Flag Not found." });
+        return res.status(200).send({ message: "Flag Not found." });
       }
       else{
         Flag.update(
@@ -89,7 +89,7 @@ exports.update = (req, res) => {
               res.status(200).send({message:'Flag updated.'})
             }
             else{
-              res.status(404).send({message:'Flag does not exist.'})
+              res.status(200).send({message:'Flag does not exist.'})
             }
         })
       }
@@ -106,7 +106,7 @@ exports.destroy = (req,res) => {
   return Flag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Flag Not found." });
+        return res.status(200).send({ message: "Flag Not found." });
       }
       else{
         Flag.destroy({where:{id:req.params.id}});

@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
   return Defineurl.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "URL not found." });
+        return res.status(200).send({ message: "URL not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -69,7 +69,7 @@ exports.update = (req, res) => {
   return Defineurl.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "URL Not found." });
+        return res.status(200).send({ message: "URL Not found." });
       }
       else{
         Defineurl.update(
@@ -102,7 +102,7 @@ exports.destroy = (req,res) => {
   return Defineurl.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "URL Not found." });
+        return res.status(200).send({ message: "URL Not found." });
       }
       else{
         Defineurl.destroy({where:{name:req.params.name}});

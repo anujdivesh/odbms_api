@@ -38,7 +38,7 @@ exports.findOrCreate = (req, res) => {
   })
     .then(data => {
       if (!data) {
-        return res.status(404).send({ message: "Params cannot be empty." });
+        return res.status(200).send({ message: "Params cannot be empty." });
       }
       if (data[1]==true){
         res.status(200).send({message:'Parameter Created.'})
@@ -59,7 +59,7 @@ exports.findOne = (req, res) => {
   return Parameter.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Parameter Not found." });
+        return res.status(200).send({ message: "Parameter Not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -78,7 +78,7 @@ exports.update = async(req, res) => {
     const cont = await Parameter.findByPk(countryId);
   
     if (!cont) {
-      return res.status(404).json({ message: 'Parameter not found' });
+      return res.status(200).json({ message: 'Parameter not found' });
     }
     else{
   
@@ -117,7 +117,7 @@ exports.destroy = (req,res) => {
   return Parameter.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Parameter Not found." });
+        return res.status(200).send({ message: "Parameter Not found." });
       }
       else{
         Parameter.destroy({where:{short_name:req.params.short_name}});

@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
   return datatype.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Data type not found." });
+        return res.status(200).send({ message: "Data type not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -71,7 +71,7 @@ exports.update = async(req, res) => {
     const cont = await datatype.findByPk(countryId);
     console.log(cont)
     if (!cont) {
-      return res.status(404).json({ message: 'Data Type not found' });
+      return res.status(200).json({ message: 'Data Type not found' });
     }
     else{
       if (req.body.datatype_code != null){
@@ -96,7 +96,7 @@ exports.destroy = (req,res) => {
   return datatype.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Data type Not found." });
+        return res.status(200).send({ message: "Data type Not found." });
       }
       else{
         datatype.destroy({where:{id:req.params.id}});

@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
   return Defineextent.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Extent Definition not found." });
+        return res.status(200).send({ message: "Extent Definition not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -70,7 +70,7 @@ exports.update = (req, res) => {
   return Defineextent.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Extent Definition Not found." });
+        return res.status(200).send({ message: "Extent Definition Not found." });
       }
       else{
         Defineextent.update(
@@ -103,7 +103,7 @@ exports.destroy = (req,res) => {
   return Defineextent.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Extent Definition Not found." });
+        return res.status(200).send({ message: "Extent Definition Not found." });
       }
       else{
         Defineextent.destroy({where:{name:req.params.name}});

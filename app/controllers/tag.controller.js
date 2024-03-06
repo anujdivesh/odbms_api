@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
   return Tag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Tag not found." });
+        return res.status(200).send({ message: "Tag not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -68,7 +68,7 @@ exports.update = (req, res) => {
   return Tag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Tag Not found." });
+        return res.status(200).send({ message: "Tag Not found." });
       }
       else{
         Tag.update(
@@ -101,7 +101,7 @@ exports.destroy = (req,res) => {
   return Tag.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Tag Not found." });
+        return res.status(200).send({ message: "Tag Not found." });
       }
       else{
         Tag.destroy({where:{id:req.params.id}});

@@ -1,7 +1,7 @@
 module.exports = {
     secret: "opm-ocean-data-secret",
-    jwtExpiration: 3600,         // 1 hour
-    jwtRefreshExpiration: 86400, // 24 hours
+    jwtExpiration: 36000,         // 1 hour
+    jwtRefreshExpiration: 864000, // 24 hours
 
   /* for test */
  // jwtExpiration: 60,          // 1 minute

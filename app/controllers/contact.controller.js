@@ -59,7 +59,7 @@ exports.findOne = (req, res) => {
   return Contact.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Contact Not found." });
+        return res.status(200).send({ message: "Contact Not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -78,7 +78,7 @@ exports.update = async(req, res) => {
     const cont = await Contact.findByPk(countryId);
   
     if (!cont) {
-      return res.status(404).json({ message: 'Contact not found' });
+      return res.status(200).json({ message: 'Contact not found' });
     }
     else{
   
@@ -113,7 +113,7 @@ exports.destroy = (req,res) => {
   return Contact.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Contact Not found." });
+        return res.status(200).send({ message: "Contact Not found." });
       }
       else{
         Contact.destroy({where:{id:req.params.id}});

@@ -56,7 +56,7 @@ exports.signin = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(200).send({ message: "User Not found." });
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -65,7 +65,7 @@ exports.signin = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({
+        return res.status(200).send({
           accessToken: null,
           message: "Invalid Password!"
         });
@@ -146,7 +146,7 @@ exports.forgotPassword = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(200).send({ message: "User Not found." });
       }
       const secret = config.secret + user.password;
     const token = jwt.sign({ email: user.email, id: user.id }, secret, {
@@ -294,7 +294,7 @@ exports.destroyRefresh = async (req,res) => {
     .then((refreshToken) => {
       console.log(refreshToken)
       if (!refreshToken) {
-        return res.status(404).send({ message: "Token Not found." });
+        return res.status(200).send({ message: "Token Not found." });
       }
       else{
         RefreshToken.destroy({where:{token:req.body.refreshToken}});

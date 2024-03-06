@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
   return Status.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Status not found." });
+        return res.status(200).send({ message: "Status not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -68,7 +68,7 @@ exports.update = (req, res) => {
   return Status.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Status Not found." });
+        return res.status(200).send({ message: "Status Not found." });
       }
       else{
         Status.update(
@@ -101,7 +101,7 @@ exports.destroy = (req,res) => {
   return Status.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Status Not found." });
+        return res.status(200).send({ message: "Status Not found." });
       }
       else{
         Status.destroy({where:{id:req.params.id}});

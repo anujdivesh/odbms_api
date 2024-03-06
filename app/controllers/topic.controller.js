@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
   return Topic.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Topic not found." });
+        return res.status(200).send({ message: "Topic not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -68,7 +68,7 @@ exports.update = (req, res) => {
   return Topic.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Topic Not found." });
+        return res.status(200).send({ message: "Topic Not found." });
       }
       else{
         Topic.update(
@@ -101,7 +101,7 @@ exports.destroy = (req,res) => {
   return Topic.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Topic Not found." });
+        return res.status(200).send({ message: "Topic Not found." });
       }
       else{
         Topic.destroy({where:{id:req.params.id}});

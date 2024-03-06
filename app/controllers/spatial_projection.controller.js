@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
   return SpatialProjection.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Spatial Projection not found." });
+        return res.status(200).send({ message: "Spatial Projection not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -68,7 +68,7 @@ exports.update = (req, res) => {
   return SpatialProjection.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Spatial Projection Not found." });
+        return res.status(200).send({ message: "Spatial Projection Not found." });
       }
       else{
         SpatialProjection.update(
@@ -101,7 +101,7 @@ exports.destroy = (req,res) => {
   return SpatialProjection.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Spatial Projection Not found." });
+        return res.status(200).send({ message: "Spatial Projection Not found." });
       }
       else{
         SpatialProjection.destroy({where:{id:req.params.id}});

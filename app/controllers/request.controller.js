@@ -25,7 +25,7 @@ exports.findAll = (req, res) => {
       })
       .then(metadata => {
         if (metadata.length==0){
-          res.status(404).send({message:"No Records Found."});
+          res.status(200).send({message:"No Records Found."});
         }
         else{
         res.send(metadata);
@@ -60,7 +60,7 @@ exports.findAllbyUser = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -107,7 +107,7 @@ exports.findOrCreate = async(req, res) => {
     }
     catch(err){
       console.log(err)
-      res.status(404).send({ message: "Please specify all the required parameters." });
+      res.status(200).send({ message: "Please specify all the required parameters." });
     }
   };
 
@@ -132,7 +132,7 @@ exports.findOne = (req, res) => {
   })
   .then(metadata => {
     if (metadata.length==0){
-      res.status(404).send({message:"No Records Found."});
+      res.status(200).send({message:"No Records Found."});
     }
     else{
     res.send(metadata);
@@ -159,7 +159,7 @@ exports.update = async(req, res) => {
     });
   
     if (!cont) {
-      return res.status(404).json({ message: 'Request not found' });
+      return res.status(200).json({ message: 'Request not found' });
     }
     else{
   
@@ -207,7 +207,7 @@ exports.updateadmin = async(req, res) => {
     });
   
     if (!cont) {
-      return res.status(404).json({ message: 'Request not found' });
+      return res.status(200).json({ message: 'Request not found' });
     }
     else{
   
@@ -249,7 +249,7 @@ exports.destroyadmin = (req,res) => {
   return Request.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Request Not found." });
+        return res.status(200).send({ message: "Request Not found." });
       }
       else{
         Request.destroy({where:{id:req.params.id}});
@@ -270,7 +270,7 @@ exports.destroy = async(req,res) => {
         }
     });
     if (!cont) {
-      return res.status(404).json({ message: 'Request not found' });
+      return res.status(200).json({ message: 'Request not found' });
     }
     else{
   

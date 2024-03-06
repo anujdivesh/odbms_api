@@ -53,7 +53,7 @@ exports.findOne = (req, res) => {
   return Organization.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Organization not found." });
+        return res.status(200).send({ message: "Organization not found." });
       }
       else{
         res.status(200).send(countryId);
@@ -71,7 +71,7 @@ exports.update = async(req, res) => {
   const org = await Organization.findByPk(countryId);
 
   if (!org) {
-    return res.status(404).json({ message: 'Organization not found' });
+    return res.status(200).json({ message: 'Organization not found' });
   }
   else{
 
@@ -100,7 +100,7 @@ exports.destroy = (req,res) => {
   return Organization.findByPk(countryId)
     .then((countryId) => {
       if (!countryId) {
-        return res.status(404).send({ message: "Organization Not found." });
+        return res.status(200).send({ message: "Organization Not found." });
       }
       else{
         Organization.destroy({where:{id:req.params.id}});
