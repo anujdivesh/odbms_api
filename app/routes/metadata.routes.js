@@ -63,7 +63,7 @@ module.exports = app => {
         "/api/metadata/findByExtent",
         controller.findByExtent
       );
-      app.get(
+      app.post(
         "/api/metadata/findByMultipleParam",
         controller.getListingTitle
       );
@@ -75,7 +75,7 @@ module.exports = app => {
         "/api/auth/metadata/findByExtent",
         controller.findByExtentauth
       );
-      app.get(
+      app.post(
         "/api/auth/metadata/findByMultipleParam",
         controller.getListingTitleauth
       );

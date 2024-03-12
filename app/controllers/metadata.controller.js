@@ -17,7 +17,7 @@ const Sequelize = db.Sequelize.Sequelize;
 // Retrieve all Tutorials from the database.
 exports.getListing = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{is_checked:true},
     include: [
@@ -26,22 +26,8 @@ exports.getListing = (req, res) => {
         attributes: ['id','datatype_code'],
       },
       {
-        model: db.parameter,
-        attributes: ['short_name','standard_name','long_name','units','uri'],
-        through:{ attributes:[]}
-      },
-      {
         model: Country,
         attributes: ['country_code','country_name'],
-        through:{ attributes:[]}
-      },
-      {
-        model: Spatial_projection,
-        attributes: ['name'],
-      },
-      {
-        model: db.spatial_extent,
-        attributes:['value','extent_name'],
         through:{ attributes:[]}
       },
       {
@@ -49,46 +35,48 @@ exports.getListing = (req, res) => {
         attributes: ['id','project_code','project_name'],
       },
       {
-        model: Organization,
-        attributes: ['id','short_name','name','website'],
+        model: db.contact,
+        attributes: ['id','first_name','last_name','position','email'],
+      }
+    ]
+  })
+  .then(metadata => {
+    if (metadata.length==0){
+      res.status(200).send({message:"No Records Found."});
+    }
+    else{
+    res.send(metadata);
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving metadata."
+    });
+  });
+};
+exports.getListingauth = (req, res) => {
+  MetaData.findAll({
+    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
+    order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
+    include: [
+      {
+        model: Data_type,
+        attributes: ['id','datatype_code'],
+      },
+      {
+        model: Country,
+        attributes: ['country_code','country_name'],
+        through:{ attributes:[]}
+      },
+      {
+        model: Project,
+        attributes: ['id','project_code','project_name'],
       },
       {
         model: db.contact,
         attributes: ['id','first_name','last_name','position','email'],
-      },
-      {
-        model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
-      },
-      {
-        model: db.flag,
-        attributes: ['id',"name"],
-        through:{ attributes:[]}
-      },
-      {
-        model: db.tag,
-        attributes: ['id','name'],
-        through:{ attributes:[]}
-      },
-      {
-        model: db.topic,
-        attributes: ['id','name'],
-        through:{ attributes:[]}
-      },
-      {
-        model: db.sourceurl,
-        attributes: ['value','url_name','is_restricted'],
-        required: false,
-        through:{ attributes:[]},
-        where:{
-          is_restricted: {
-          [Op.ne]: true
-        }}
-      },
-      {
-        model: License,
-        attributes: ['short_name','name','url'],
-      },
+      }
     ]
   })
   .then(metadata => {
@@ -107,200 +95,38 @@ exports.getListing = (req, res) => {
   });
 };
 exports.getListingTitle = async(req, res) => {
-  console.log('-------------------------')
-  var topic_arr=[]
-  if (req.body.topic_ids != null){
-    topic_arr = req.body.topic_ids;
-  }
-  var tag_arr=[]
-  if (req.body.tag_ids != null){
-    tag_arr = req.body.tag_ids;
-  }
-  var param_arr=[]
-  if (req.body.parameters != null){
-    param_arr = req.body.parameters;
-  }
-  console.log(tag_arr)
   MetaData.findAll({
-    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
-    order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
-    where:{is_checked:true, 
-      [Op.or]: [
-        { title:{[Op.iLike]: `%${req.body.title}%`}},
-        {
-          '$countries.country_code$': {
-            [Op.like]: req.body.country // Condition 2: Posts with titles containing 'JavaScript'
-          }
-        },
-        {
-          '$data_type.id$': {
-            [Op.eq]: req.body.datatype_id // Condition 2: Posts with titles containing 'JavaScript'
-          }
-        },
-        {
-          '$parameters.short_name$': {
-            [Op.in]: param_arr // Condition 2: Posts with titles containing 'JavaScript'
-          }
-        },
-        {
-          '$project.id$': {
-            [Op.eq]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
-          }
-        },
-        {
-          '$tags.id$': {
-            [Op.in]: tag_arr // Condition 2: Posts with tixtles containing 'JavaScript'
-          }
-        },
-        {
-          '$topics.id$': {
-            [Op.in]: topic_arr // Condition 2: Posts with titles containing 'JavaScript'
-          }
-        }
-      ]
-    },
-    include: [
-      {
-        model: Data_type,
-        attributes: ['id','datatype_code'],
-        required:false,
-      },
-      {
-        model: db.parameter,
-        attributes: ['short_name','standard_name','long_name','units','uri'],
-        required:false,
-        through:{ attributes:[]}
-      },
-      {
-        model: Country,
-        attributes: ['country_code','country_name'],
-        required:false,
-        through:{ attributes:[]}
-      },
-      {
-        model: Spatial_projection,
-        attributes: ['name'],
-      },
-      {
-        model: db.spatial_extent,
-        attributes:['value','extent_name'],
-        through:{ attributes:[]}
-      },
-      {
-        model: Project,
-        attributes: ['id','project_code','project_name'],
-        required:false,
-      },
-      {
-        model: Organization,
-        attributes: ['id','short_name','name','website'],
-      },
-      {
-        model: db.contact,
-        attributes: ['id','first_name','last_name','position','email'],
-      },
-      {
-        model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
-      },
-      {
-        model: db.flag,
-        attributes: ['id',"name"],
-        through:{ attributes:[]}
-      },
-      {
-        model: db.tag,
-        attributes: ['id','name'],
-        through:{ attributes:[]},
-        required:false,
-      },
-      {
-        model: db.topic,
-        attributes: ['id','name'],
-        through:{ attributes:[]},
-        required:false,
-      },
-      {
-        model: db.sourceurl,
-        attributes: ['value','url_name','is_restricted'],
-        required: false,
-        through:{ attributes:[]},
-        where:{
-          is_restricted: {
-          [Op.ne]: true
-        }}
-      },
-      {
-        model: License,
-        attributes: ['short_name','name','url'],
-      },
-    ]
-  })
-  .then(metadata => {
-    if (metadata.length==0){
-      res.status(200).send({message:"No Records Found."});
-    }
-    else{
-    res.send(metadata);
-    }
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving metadata."
-    });
-  });
-};
-
-
-exports.getListingTitleauth = async(req, res) => {
-  console.log('-------------------------')
-  var topic_arr=[]
-  if (req.body.topic_ids != null){
-    topic_arr = req.body.topic_ids;
-  }
-  var tag_arr=[]
-  if (req.body.tag_ids != null){
-    tag_arr = req.body.tag_ids;
-  }
-  var param_arr=[]
-  if (req.body.parameters != null){
-    param_arr = req.body.parameters;
-  }
-  MetaData.findAll({
-    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{
-      [Op.or]: [
+      [Op.and]: [
+        {
+          is_checked:true
+        },
         { title:{[Op.iLike]: `%${req.body.title}%`}},
         {
           '$countries.country_code$': {
-            [Op.like]: req.body.country // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.iLike]: `%${req.body.country}%` // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
-          '$data_type.id$': {
-            [Op.eq]: req.body.datatype_id // Condition 2: Posts with titles containing 'JavaScript'
+          '$data_type.datatype_code$': {
+            [Op.iLike]: `%${req.body.datatype_id}%`// Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
           '$parameters.short_name$': {
-            [Op.in]: param_arr // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.like]: `%${req.body.parameters}%` // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
-          '$project.id$': {
-            [Op.eq]: req.body.project // Condition 2: Posts with titles containing 'JavaScript'
+          '$tags.name$': {
+            [Op.like]: `%${req.body.tag}%` // Condition 2: Posts with tixtles containing 'JavaScript'
           }
         },
         {
-          '$tags.id$': {
-            [Op.in]: tag_arr // Condition 2: Posts with tixtles containing 'JavaScript'
-          }
-        },
-        {
-          '$topics.id$': {
-            [Op.in]: topic_arr // Condition 2: Posts with titles containing 'JavaScript'
+          '$topics.name$': {
+            [Op.like]: `%${req.body.topic}%` // Condition 2: Posts with titles containing 'JavaScript'
           }
         }
       ]
@@ -324,35 +150,13 @@ exports.getListingTitleauth = async(req, res) => {
         through:{ attributes:[]}
       },
       {
-        model: Spatial_projection,
-        attributes: ['name'],
-      },
-      {
-        model: db.spatial_extent,
-        attributes:['value','extent_name'],
-        through:{ attributes:[]}
-      },
-      {
         model: Project,
         attributes: ['id','project_code','project_name'],
         required:false,
       },
       {
-        model: Organization,
-        attributes: ['id','short_name','name','website'],
-      },
-      {
         model: db.contact,
         attributes: ['id','first_name','last_name','position','email'],
-      },
-      {
-        model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
-      },
-      {
-        model: db.flag,
-        attributes: ['id',"name"],
-        through:{ attributes:[]}
       },
       {
         model: db.tag,
@@ -365,21 +169,7 @@ exports.getListingTitleauth = async(req, res) => {
         attributes: ['id','name'],
         through:{ attributes:[]},
         required:false,
-      },
-      {
-        model: db.sourceurl,
-        attributes: ['value','url_name','is_restricted'],
-        required: false,
-        through:{ attributes:[]},
-        where:{
-          is_restricted: {
-          [Op.ne]: true
-        }}
-      },
-      {
-        model: License,
-        attributes: ['short_name','name','url'],
-      },
+      }
     ]
   })
   .then(metadata => {
@@ -398,6 +188,98 @@ exports.getListingTitleauth = async(req, res) => {
   });
 };
 
+exports.getListingTitleauth = async(req, res) => {
+  MetaData.findAll({
+    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
+    order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
+    where:{
+      [Op.and]: [
+        { title:{[Op.iLike]: `%${req.body.title}%`}},
+        {
+          '$countries.country_code$': {
+            [Op.iLike]: `%${req.body.country}%` // Condition 2: Posts with titles containing 'JavaScript'
+          }
+        },
+        {
+          '$data_type.datatype_code$': {
+            [Op.iLike]: `%${req.body.datatype_id}%`// Condition 2: Posts with titles containing 'JavaScript'
+          }
+        },
+        {
+          '$parameters.short_name$': {
+            [Op.like]: `%${req.body.parameters}%` // Condition 2: Posts with titles containing 'JavaScript'
+          }
+        },
+        {
+          '$tags.name$': {
+            [Op.like]: `%${req.body.tag}%` // Condition 2: Posts with tixtles containing 'JavaScript'
+          }
+        },
+        {
+          '$topics.name$': {
+            [Op.like]: `%${req.body.topic}%` // Condition 2: Posts with titles containing 'JavaScript'
+          }
+        }
+      ]
+    },
+    include: [
+      {
+        model: Data_type,
+        attributes: ['id','datatype_code'],
+        required:false,
+      },
+      {
+        model: db.parameter,
+        attributes: ['short_name','standard_name','long_name','units','uri'],
+        required:false,
+        through:{ attributes:[]}
+      },
+      {
+        model: Country,
+        attributes: ['country_code','country_name'],
+        required:false,
+        through:{ attributes:[]}
+      },
+      {
+        model: Project,
+        attributes: ['id','project_code','project_name'],
+        required:false,
+      },
+      {
+        model: db.contact,
+        attributes: ['id','first_name','last_name','position','email'],
+      },
+      {
+        model: db.tag,
+        attributes: ['id','name'],
+        through:{ attributes:[]},
+        required:false,
+      },
+      {
+        model: db.topic,
+        attributes: ['id','name'],
+        through:{ attributes:[]},
+        required:false,
+      }
+    ]
+  })
+  .then(metadata => {
+    if (metadata.length==0){
+      res.status(200).send({message:"No Records Found."});
+    }
+    else{
+    res.send(metadata);
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving metadata."
+    });
+  });
+};
+
+/*
 exports.getListingauth = (req, res) => {
   MetaData.findAll({
     attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
@@ -488,6 +370,7 @@ exports.getListingauth = (req, res) => {
     });
   });
 };
+*/
 exports.getListingauthchecked = (req, res) => {
   MetaData.findAll({
     attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
@@ -858,7 +741,7 @@ exports.getListingidauth = (req, res) => {
 
 exports.getListingASC = (req, res) => {
     MetaData.findAll({
-      attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
+      attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked'],
       order: [['createdAt', req.params.orderby]], // Assuming createdAt is the timestamp of creation
       where:{is_checked:true},
       include: [
