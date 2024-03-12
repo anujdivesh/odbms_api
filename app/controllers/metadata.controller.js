@@ -120,6 +120,11 @@ exports.getListingTitle = async(req, res) => {
           }
         },
         {
+          '$project.project_code$': {
+            [Op.like]: `%${req.body.project}%` // Condition 2: Posts with titles containing 'JavaScript'
+          }
+        },
+        {
           '$tags.name$': {
             [Op.like]: `%${req.body.tag}%` // Condition 2: Posts with tixtles containing 'JavaScript'
           }
@@ -208,6 +213,11 @@ exports.getListingTitleauth = async(req, res) => {
         {
           '$parameters.short_name$': {
             [Op.like]: `%${req.body.parameters}%` // Condition 2: Posts with titles containing 'JavaScript'
+          }
+        },
+        {
+          '$project.project_code$': {
+            [Op.like]: `%${req.body.project}%` // Condition 2: Posts with titles containing 'JavaScript'
           }
         },
         {
