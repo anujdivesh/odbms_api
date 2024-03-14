@@ -587,7 +587,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: Spatial_projection,
-        attributes: ['name'],
+        attributes: ['id','name'],
       },
       {
         model: db.spatial_extent,
@@ -637,7 +637,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: License,
-        attributes: ['short_name','name','url'],
+        attributes: ['id','short_name','name','url'],
       },
     ]
   })
