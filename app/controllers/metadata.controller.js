@@ -424,7 +424,7 @@ exports.getListingauthchecked = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        attributes: ['id',"first_name", "last_name","email","country_id"],
       },
       {
         model: db.flag,
@@ -516,7 +516,7 @@ exports.getListingauthrestricted = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        attributes: ['id',"first_name", "last_name","email","country_id"],
       },
       {
         model: db.flag,
@@ -608,7 +608,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id", "email"],
+        attributes: ['id',"first_name", "last_name","country_id", "email"],
         as: 'created_by'
       },
       {
@@ -700,7 +700,7 @@ exports.getListingidauth = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        attributes: ['id',"first_name", "last_name","email","country_id"],
       },
       {
         model: db.flag,
@@ -793,7 +793,7 @@ exports.getListingASC = (req, res) => {
         },
         {
           model: db.user,
-          attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+          attributes: ['id',"first_name", "last_name","email","country_id"],
         },
         {
           model: db.flag,
@@ -883,7 +883,7 @@ exports.getListingASCauth = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        attributes: ['id',"first_name", "last_name","email","country_id"],
       },
       {
         model: db.flag,
@@ -1530,7 +1530,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.user,
-              attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+              attributes: ['id',"first_name", "last_name","email","country_id"],
             },
             {
               model: db.flag,
@@ -1759,7 +1759,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.user,
-              attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+              attributes: ['id',"first_name", "last_name","email","country_id"],
             },
             {
               model: db.flag,
@@ -1953,7 +1953,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.user,
-              attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+              attributes: ['id',"first_name", "last_name","email","country_id"],
             },
             {
               model: db.flag,
@@ -2139,7 +2139,7 @@ exports.findOrCreate = async(req, res) => {
             },
             {
               model: db.user,
-              attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+              attributes: ['id',"first_name", "last_name","email","country_id"],
             },
             {
               model: db.flag,

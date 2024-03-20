@@ -210,8 +210,8 @@ db.metadata.belongsTo(db.contact, {foreignKey: 'contact_id'});
 //db.country.hasOne(db.project, {foreignKey: 'country_id'});
 //db.project.belongsTo(db.country, {foreignKey: 'country_id'});
 
-db.organization.hasOne(db.user, {foreignKey: 'organization_id'});
-db.user.belongsTo(db.organization, {foreignKey: 'organization_id'});
+//db.organization.hasOne(db.user, {foreignKey: 'organization_id'});
+//db.user.belongsTo(db.organization, {foreignKey: 'organization_id'});
 
 db.country.hasOne(db.user, {foreignKey: 'country_id'});
 db.user.belongsTo(db.country, {foreignKey: 'country_id'});

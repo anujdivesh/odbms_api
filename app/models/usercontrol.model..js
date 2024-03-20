@@ -15,9 +15,6 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
     },
-    organization_id : {
-      type: Sequelize.INTEGER
-  },
   country_id : {
     allowNull: false,
      type: Sequelize.STRING
