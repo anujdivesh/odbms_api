@@ -56,7 +56,7 @@ exports.signin = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(200).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not found." });
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -65,7 +65,7 @@ exports.signin = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(200).send({
+        return res.status(401).send({
           accessToken: null,
           message: "Invalid Password!"
         });
@@ -146,13 +146,13 @@ exports.forgotPassword = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(200).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not found." });
       }
       const secret = config.secret + user.password;
     const token = jwt.sign({ email: user.email, id: user.id }, secret, {
       expiresIn: "15m",
     });
-    const link = `http://localhost:8081/api/auth/resetPassword/${user.id}/${token}`;
+    const link = `https://opmdata.gem.spc.int/api/auth/resetPassword/${user.id}/${token}`;
 
     var transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
@@ -266,7 +266,7 @@ exports.findAllRole = (req, res) => {
   Role.findAll()
   .then(data => {
       if( data.length==0){
-          res.status(200).send({message:'Empty'})
+          res.status(404).send({message:'Empty'})
         }
       else{
       res.status(200).send(data);

@@ -609,6 +609,7 @@ exports.getListingid = (req, res) => {
       {
         model: db.user,
         attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        as: 'created_by'
       },
       {
         model: db.flag,

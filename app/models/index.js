@@ -202,7 +202,7 @@ db.organization.hasOne(db.metadata, {foreignKey: 'publisher_id'});
 db.metadata.belongsTo(db.organization, {foreignKey: 'publisher_id'});
 
 db.user.hasOne(db.metadata, {foreignKey: 'user_created_id'});
-db.metadata.belongsTo(db.user, {foreignKey: 'user_created_id'});
+db.metadata.belongsTo(db.user, {foreignKey: 'user_created_id', as: 'created_by'});
 
 db.contact.hasOne(db.metadata, {foreignKey: 'contact_id'});
 db.metadata.belongsTo(db.contact, {foreignKey: 'contact_id'});
