@@ -608,7 +608,7 @@ exports.getListingid = (req, res) => {
       },
       {
         model: db.user,
-        attributes: ['id',"first_name", "last_name","organization_id","country_id"],
+        attributes: ['id',"first_name", "last_name","organization_id","country_id", "email"],
         as: 'created_by'
       },
       {
