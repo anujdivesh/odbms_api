@@ -1371,8 +1371,8 @@ exports.findOrCreate = async(req, res) => {
             [Op.and]: [
               { value:{ [Op.gte]:req.query.minx} }, {
                 [Op.or]: [
-                  { extent_name: 'minx' },
-                  { extent_name: 'maxx' }
+                  { extent_name: 'xmin' },
+                  { extent_name: 'xmax' }
                 ]
               }
             ],
@@ -1380,6 +1380,8 @@ exports.findOrCreate = async(req, res) => {
         }
         ]
       });
+      console.log(req.query.minx)
+      console.log('anuj', min_x_metadata)
       var minx_arr = []
       for(let i = 0 ; i < min_x_metadata.length ; i++) {
         minx_arr.push(min_x_metadata[i].id)
@@ -1399,8 +1401,8 @@ exports.findOrCreate = async(req, res) => {
                 [Op.and]: [
                   { value:{ [Op.lte]:req.query.maxx} }, {
                     [Op.or]: [
-                      { extent_name: 'minx' },
-                      { extent_name: 'maxx' }
+                      { extent_name: 'xmin' },
+                      { extent_name: 'xmax' }
                     ]
                   }
                 ],
@@ -1429,8 +1431,8 @@ exports.findOrCreate = async(req, res) => {
               [Op.and]: [
                 { value:{ [Op.gte]:req.query.miny} }, {
                   [Op.or]: [
-                    { extent_name: 'miny' },
-                    { extent_name: 'maxy' }
+                    { extent_name: 'ymin' },
+                    { extent_name: 'ymax' }
                   ]
                 }
               ],
@@ -1454,8 +1456,8 @@ exports.findOrCreate = async(req, res) => {
                 [Op.and]: [
                   { value:{ [Op.lte]:req.query.maxy} }, {
                     [Op.or]: [
-                      { extent_name: 'miny' },
-                      { extent_name: 'maxy' }
+                      { extent_name: 'ymin' },
+                      { extent_name: 'ymax' }
                     ]
                   }
                 ],
@@ -1498,22 +1500,8 @@ exports.findOrCreate = async(req, res) => {
               attributes: ['id','datatype_code'],
             },
             {
-              model: db.parameter,
-              attributes: ['short_name','standard_name','long_name','units','uri'],
-              through:{ attributes:[]}
-            },
-            {
               model: Country,
               attributes: ['country_code','country_name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: Spatial_projection,
-              attributes: ['name'],
-            },
-            {
-              model: db.spatial_extent,
-              attributes:['value','extent_name'],
               through:{ attributes:[]}
             },
             {
@@ -1527,39 +1515,6 @@ exports.findOrCreate = async(req, res) => {
             {
               model: db.contact,
               attributes: ['id','first_name','last_name','position','email'],
-            },
-            {
-              model: db.user,
-              attributes: ['id',"first_name", "last_name","email","country_id"],
-            },
-            {
-              model: db.flag,
-              attributes: ['id',"name"],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.tag,
-              attributes: ['id','name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.topic,
-              attributes: ['id','name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.sourceurl,
-              attributes: ['value','url_name','is_restricted'],
-              required: false,
-              through:{ attributes:[]},
-              where:{
-                is_restricted: {
-                [Op.ne]: true
-              }}
-            },
-            {
-              model: License,
-              attributes: ['short_name','name','url'],
             },
           ]
         })
