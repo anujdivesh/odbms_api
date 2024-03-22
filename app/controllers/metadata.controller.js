@@ -1380,8 +1380,8 @@ exports.findOrCreate = async(req, res) => {
         }
         ]
       });
-      console.log(req.query.minx)
-      console.log('anuj', min_x_metadata)
+  //    console.log(req.query.minx)
+    //  console.log('anuj', min_x_metadata)
       var minx_arr = []
       for(let i = 0 ; i < min_x_metadata.length ; i++) {
         minx_arr.push(min_x_metadata[i].id)
@@ -1420,6 +1420,10 @@ exports.findOrCreate = async(req, res) => {
         console.log('x does not exist')
         x_exist = false
       }
+      //checking 
+    //  console.log('--------------------------------------')
+
+//      console.log(minx_arr, maxx_arr)
 
       const min_y_metadata = await MetaData.findAll({
         include:[
@@ -1469,9 +1473,16 @@ exports.findOrCreate = async(req, res) => {
           for(let i = 0 ; i < max_y_metadata.length ; i++) {
             maxy_arr.push(max_y_metadata[i].id)
           }
+
+          //checking
+       //   console.log('--------------------------------------Y')
+
+     // console.log(miny_arr, maxy_arr)
+
+
           var y_exist = true;
           if (miny_arr.length ==0 || maxy_arr.length ==0){
-            console.log('y does not exist')
+        //    console.log('y does not exist')
             y_exist = false
           }
           var xexist_arr = mergeAndRemoveDuplicates([minx_arr,maxx_arr]);
@@ -1482,10 +1493,13 @@ exports.findOrCreate = async(req, res) => {
           if(!y_exist){
             yexist_arr = [] 
           }
-          
-
-        var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
-          console.log(bigarray)
+        //  console.log(xexist_arr, yexist_arr)
+          var arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          //console.log('final')
+         // console.log(arr_2[0])
+      //  var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
+        var bigarray= arr_2[0]
+          //console.log(bigarray)
       if (bigarray.length == 0) {
         return res.status(200).json({ message: 'Metadata not found' });
       }
@@ -1555,8 +1569,8 @@ exports.findOrCreate = async(req, res) => {
             [Op.and]: [
               { value:{ [Op.gte]:req.query.minx} }, {
                 [Op.or]: [
-                  { extent_name: 'minx' },
-                  { extent_name: 'maxx' }
+                  { extent_name: 'xmin' },
+                  { extent_name: 'xmax' }
                 ]
               }
             ],
@@ -1564,6 +1578,8 @@ exports.findOrCreate = async(req, res) => {
         }
         ]
       });
+  //    console.log(req.query.minx)
+    //  console.log('anuj', min_x_metadata)
       var minx_arr = []
       for(let i = 0 ; i < min_x_metadata.length ; i++) {
         minx_arr.push(min_x_metadata[i].id)
@@ -1583,8 +1599,8 @@ exports.findOrCreate = async(req, res) => {
                 [Op.and]: [
                   { value:{ [Op.lte]:req.query.maxx} }, {
                     [Op.or]: [
-                      { extent_name: 'minx' },
-                      { extent_name: 'maxx' }
+                      { extent_name: 'xmin' },
+                      { extent_name: 'xmax' }
                     ]
                   }
                 ],
@@ -1602,6 +1618,10 @@ exports.findOrCreate = async(req, res) => {
         console.log('x does not exist')
         x_exist = false
       }
+      //checking 
+    //  console.log('--------------------------------------')
+
+//      console.log(minx_arr, maxx_arr)
 
       const min_y_metadata = await MetaData.findAll({
         include:[
@@ -1613,8 +1633,8 @@ exports.findOrCreate = async(req, res) => {
               [Op.and]: [
                 { value:{ [Op.gte]:req.query.miny} }, {
                   [Op.or]: [
-                    { extent_name: 'miny' },
-                    { extent_name: 'maxy' }
+                    { extent_name: 'ymin' },
+                    { extent_name: 'ymax' }
                   ]
                 }
               ],
@@ -1638,8 +1658,8 @@ exports.findOrCreate = async(req, res) => {
                 [Op.and]: [
                   { value:{ [Op.lte]:req.query.maxy} }, {
                     [Op.or]: [
-                      { extent_name: 'miny' },
-                      { extent_name: 'maxy' }
+                      { extent_name: 'ymin' },
+                      { extent_name: 'ymax' }
                     ]
                   }
                 ],
@@ -1651,9 +1671,16 @@ exports.findOrCreate = async(req, res) => {
           for(let i = 0 ; i < max_y_metadata.length ; i++) {
             maxy_arr.push(max_y_metadata[i].id)
           }
+
+          //checking
+       //   console.log('--------------------------------------Y')
+
+     // console.log(miny_arr, maxy_arr)
+
+
           var y_exist = true;
           if (miny_arr.length ==0 || maxy_arr.length ==0){
-            console.log('y does not exist')
+        //    console.log('y does not exist')
             y_exist = false
           }
           var xexist_arr = mergeAndRemoveDuplicates([minx_arr,maxx_arr]);
@@ -1664,10 +1691,13 @@ exports.findOrCreate = async(req, res) => {
           if(!y_exist){
             yexist_arr = [] 
           }
-          
-
-        var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
-          console.log(bigarray)
+        //  console.log(xexist_arr, yexist_arr)
+          var arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          //console.log('final')
+         // console.log(arr_2[0])
+      //  var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
+        var bigarray= arr_2[0]
+       //   console.log(bigarray)
       if (bigarray.length == 0) {
         return res.status(200).json({ message: 'Metadata not found' });
       }
@@ -2151,3 +2181,22 @@ exports.findOrCreate = async(req, res) => {
       
   };
 
+  function removeAllDuplicates(arr) {
+    const arrStrCounts = new Map();
+
+    // First, count occurrences of each stringified, sorted array
+    arr.forEach(innerArr => {
+        const arrStr = JSON.stringify(innerArr.slice().sort());
+        const currentCount = arrStrCounts.get(arrStr) || 0;
+        arrStrCounts.set(arrStr, currentCount + 1);
+    });
+
+    // Then, filter the original array to include only those
+    // arrays whose stringified, sorted version was seen exactly once
+    const resultArr = arr.filter(innerArr => {
+        const arrStr = JSON.stringify(innerArr.slice().sort());
+        return arrStrCounts.get(arrStr) === 1;
+    });
+
+    return resultArr;
+}
