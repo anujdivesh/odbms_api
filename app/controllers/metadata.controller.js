@@ -1380,16 +1380,12 @@ exports.findOrCreate = async(req, res) => {
         }
         ]
       });
-  //    console.log(req.query.minx)
-    //  console.log('anuj', min_x_metadata)
+
       var minx_arr = []
       for(let i = 0 ; i < min_x_metadata.length ; i++) {
         minx_arr.push(min_x_metadata[i].id)
-     //   for(let j = 0 ; j < min_x_metadata[i].spatial_extents.length ; j++) {
-     //   console.log(min_x_metadata[i].id)
-     //     console.log(min_x_metadata[i].spatial_extents[j].extent_name)
-     //   }
       }
+
       const max_x_metadata = await MetaData.findAll({
         attributes: ['id'],
           include:[
@@ -1413,17 +1409,17 @@ exports.findOrCreate = async(req, res) => {
           var maxx_arr = []
           for(let i = 0 ; i < max_x_metadata.length ; i++) {
             maxx_arr.push(max_x_metadata[i].id)
+        //    for(let j = 0 ; j < max_x_metadata[i].spatial_extents.length ; j++) {
+         //     maxx_arr2.push([max_x_metadata[i].id,max_x_metadata[i].spatial_extents[j].extent_name])
+          //}
           }
+
       var x_exist = true;
 
       if (minx_arr.length ==0 || maxx_arr.length ==0){
         console.log('x does not exist')
         x_exist = false
       }
-      //checking 
-    //  console.log('--------------------------------------')
-
-//      console.log(minx_arr, maxx_arr)
 
       const min_y_metadata = await MetaData.findAll({
         include:[
@@ -1447,6 +1443,9 @@ exports.findOrCreate = async(req, res) => {
         var miny_arr = []
         for(let i = 0 ; i < min_y_metadata.length ; i++) {
           miny_arr.push(min_y_metadata[i].id)
+   //       for(let j = 0 ; j < min_y_metadata[i].spatial_extents.length ; j++) {
+    //        maxx_arr2.push([min_y_metadata[i].id,min_y_metadata[i].spatial_extents[j].extent_name])
+     //   }
         }
   
       const max_y_metadata = await MetaData.findAll({
@@ -1472,17 +1471,15 @@ exports.findOrCreate = async(req, res) => {
           var maxy_arr = []
           for(let i = 0 ; i < max_y_metadata.length ; i++) {
             maxy_arr.push(max_y_metadata[i].id)
+       //     for(let j = 0 ; j < max_y_metadata[i].spatial_extents.length ; j++) {
+         //     maxx_arr2.push([max_y_metadata[i].id,max_y_metadata[i].spatial_extents[j].extent_name])
+          ///}
           }
 
           //checking
-       //   console.log('--------------------------------------Y')
-
-     // console.log(miny_arr, maxy_arr)
-
-
+      
           var y_exist = true;
           if (miny_arr.length ==0 || maxy_arr.length ==0){
-        //    console.log('y does not exist')
             y_exist = false
           }
           var xexist_arr = mergeAndRemoveDuplicates([minx_arr,maxx_arr]);
@@ -1493,13 +1490,16 @@ exports.findOrCreate = async(req, res) => {
           if(!y_exist){
             yexist_arr = [] 
           }
-        //  console.log(xexist_arr, yexist_arr)
-          var arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
-          //console.log('final')
-         // console.log(arr_2[0])
-      //  var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
+       //   console.log(minx_arr2, maxx_arr2,miny_arr2,maxy_arr2)
+
+
+          var arr_2 = [];
+          arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          if (arr_2.length === 0){
+            console.log('all matching so remove dups')
+            arr_2 = removeDuplicateArrays([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          }
         var bigarray= arr_2[0]
-          //console.log(bigarray)
       if (bigarray.length == 0) {
         return res.status(200).json({ message: 'Metadata not found' });
       }
@@ -1691,7 +1691,7 @@ exports.findOrCreate = async(req, res) => {
           if(!y_exist){
             yexist_arr = [] 
           }
-        //  console.log(xexist_arr, yexist_arr)
+         // console.log(xexist_arr, yexist_arr)
           var arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
           //console.log('final')
          // console.log(arr_2[0])
@@ -2199,4 +2199,20 @@ exports.findOrCreate = async(req, res) => {
     });
 
     return resultArr;
+}
+
+function removeDuplicateArrays(arr) {
+    const seen = new Set();
+    const uniqueArr = [];
+
+    arr.forEach(innerArr => {
+        const arrStr = JSON.stringify(innerArr.slice().sort());
+
+        if (!seen.has(arrStr)) {
+            seen.add(arrStr);
+            uniqueArr.push(innerArr);
+        }
+    });
+
+    return uniqueArr;
 }
