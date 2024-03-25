@@ -950,6 +950,7 @@ exports.deletemetadata = (req,res) => {
 };
 
 function hasDuplicates(array) {
+ 
   var valuesSoFar = Object.create(null);
   for (var i = 0; i < array.length; ++i) {
       var value = array[i];
@@ -987,9 +988,9 @@ exports.findOrCreate = async(req, res) => {
   for(let i = 0 ; i < req.body.extents.length ; i++) {
     //myarr.push()
     myarr.push(req.body.extents[i]['name'])
-    myarr.push(req.body.extents[i]['value'])
+   // myarr.push(req.body.extents[i]['value'])
   }
-  console.log(myarr)
+ // console.log(myarr)
   var duplicate = hasDuplicates(myarr);
   var duplicate_msg ="";
   if (duplicate == true){
@@ -1145,7 +1146,7 @@ exports.findOrCreate = async(req, res) => {
       var myarr=[];
   for(let i = 0 ; i < req.body.extents.length ; i++) {
     myarr.push(req.body.extents[i]['name'])
-    myarr.push(req.body.extents[i]['value'])
+   // myarr.push(req.body.extents[i]['value'])
   }
   
   var duplicate = hasDuplicates(myarr);
@@ -1243,7 +1244,7 @@ exports.findOrCreate = async(req, res) => {
       await metadata.setSourceurls([]);
       for (i=0; i<metadata.sourceurls.length; i++){
 
-        console.log(metadata.sourceurls[i].dataValues)
+    //    console.log(metadata.sourceurls[i].dataValues)
 
         const spatialEX2 = await db.sourceurl.create({url_name:metadata.sourceurls[i].dataValues.url_name,value:metadata.sourceurls[i].dataValues.value, is_restricted: is_restricted_varib});
         await metadata.addSourceurls(spatialEX2);
@@ -1296,10 +1297,10 @@ exports.findOrCreate = async(req, res) => {
         const uri = req.body.urls;
       if(uri != null){
         await metadata.setSourceurls([]);
-        console.log(uri);
+     //   console.log(uri);
         var urll = String(uri)
         let letter = urll.charAt(0);
-        console.log(letter)
+       // console.log(letter)
         var myarrrr = [];
         myarrrr.push(uri)
         if (myarrrr[0].url === undefined) {
@@ -1319,7 +1320,7 @@ exports.findOrCreate = async(req, res) => {
         if(req.body.contact_id != null ){
         metadata.setContact(req.body.contact_id);
         }
-        console.log(req.body.countries)
+    //    console.log(req.body.countries)
         if (req.body.countries !=null){
           metadata.setCountries(req.body.countries);
         }
@@ -1359,7 +1360,7 @@ exports.findOrCreate = async(req, res) => {
   };
 
   exports.findByExtent = async(req, res) => {
-    console.log(req.query)
+   // console.log(req.query)
     try{
     const min_x_metadata = await MetaData.findAll({
       include:[
@@ -1417,7 +1418,7 @@ exports.findOrCreate = async(req, res) => {
       var x_exist = true;
 
       if (minx_arr.length ==0 || maxx_arr.length ==0){
-        console.log('x does not exist')
+     //   console.log('x does not exist')
         x_exist = false
       }
 
@@ -1496,7 +1497,7 @@ exports.findOrCreate = async(req, res) => {
           var arr_2 = [];
           arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
           if (arr_2.length === 0){
-            console.log('all matching so remove dups')
+           // console.log('all matching so remove dups')
             arr_2 = removeDuplicateArrays([minx_arr, maxx_arr, miny_arr, maxy_arr])
           }
         var bigarray= arr_2[0]
@@ -1557,7 +1558,7 @@ exports.findOrCreate = async(req, res) => {
   };
 
   exports.findByExtentauth = async(req, res) => {
-    console.log(req.query)
+  //  console.log(req.query)
     try{
     const min_x_metadata = await MetaData.findAll({
       include:[
@@ -1615,7 +1616,7 @@ exports.findOrCreate = async(req, res) => {
       var x_exist = true;
 
       if (minx_arr.length ==0 || maxx_arr.length ==0){
-        console.log('x does not exist')
+   //     console.log('x does not exist')
         x_exist = false
       }
       //checking 
