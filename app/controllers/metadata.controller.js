@@ -1507,7 +1507,11 @@ exports.findOrCreate = async(req, res) => {
       else{
         MetaData.findAll({
           attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
-          where:{id:bigarray, is_checked:true},
+          where:{id:bigarray, is_checked:true,
+              '$data_type.datatype_code$': {
+                [Op.iLike]: `%${req.query.datatype}%`// Condition 2: Posts with titles containing 'JavaScript'
+              }
+          },
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
             {
@@ -1558,8 +1562,8 @@ exports.findOrCreate = async(req, res) => {
   };
 
   exports.findByExtentauth = async(req, res) => {
-  //  console.log(req.query)
-    try{
+  // console.log(req.query)
+  try{
     const min_x_metadata = await MetaData.findAll({
       include:[
       {
@@ -1579,16 +1583,12 @@ exports.findOrCreate = async(req, res) => {
         }
         ]
       });
-  //    console.log(req.query.minx)
-    //  console.log('anuj', min_x_metadata)
+
       var minx_arr = []
       for(let i = 0 ; i < min_x_metadata.length ; i++) {
         minx_arr.push(min_x_metadata[i].id)
-     //   for(let j = 0 ; j < min_x_metadata[i].spatial_extents.length ; j++) {
-     //   console.log(min_x_metadata[i].id)
-     //     console.log(min_x_metadata[i].spatial_extents[j].extent_name)
-     //   }
       }
+
       const max_x_metadata = await MetaData.findAll({
         attributes: ['id'],
           include:[
@@ -1612,17 +1612,17 @@ exports.findOrCreate = async(req, res) => {
           var maxx_arr = []
           for(let i = 0 ; i < max_x_metadata.length ; i++) {
             maxx_arr.push(max_x_metadata[i].id)
+        //    for(let j = 0 ; j < max_x_metadata[i].spatial_extents.length ; j++) {
+         //     maxx_arr2.push([max_x_metadata[i].id,max_x_metadata[i].spatial_extents[j].extent_name])
+          //}
           }
+
       var x_exist = true;
 
       if (minx_arr.length ==0 || maxx_arr.length ==0){
-   //     console.log('x does not exist')
+     //   console.log('x does not exist')
         x_exist = false
       }
-      //checking 
-    //  console.log('--------------------------------------')
-
-//      console.log(minx_arr, maxx_arr)
 
       const min_y_metadata = await MetaData.findAll({
         include:[
@@ -1646,6 +1646,9 @@ exports.findOrCreate = async(req, res) => {
         var miny_arr = []
         for(let i = 0 ; i < min_y_metadata.length ; i++) {
           miny_arr.push(min_y_metadata[i].id)
+   //       for(let j = 0 ; j < min_y_metadata[i].spatial_extents.length ; j++) {
+    //        maxx_arr2.push([min_y_metadata[i].id,min_y_metadata[i].spatial_extents[j].extent_name])
+     //   }
         }
   
       const max_y_metadata = await MetaData.findAll({
@@ -1671,17 +1674,15 @@ exports.findOrCreate = async(req, res) => {
           var maxy_arr = []
           for(let i = 0 ; i < max_y_metadata.length ; i++) {
             maxy_arr.push(max_y_metadata[i].id)
+       //     for(let j = 0 ; j < max_y_metadata[i].spatial_extents.length ; j++) {
+         //     maxx_arr2.push([max_y_metadata[i].id,max_y_metadata[i].spatial_extents[j].extent_name])
+          ///}
           }
 
           //checking
-       //   console.log('--------------------------------------Y')
-
-     // console.log(miny_arr, maxy_arr)
-
-
+      
           var y_exist = true;
           if (miny_arr.length ==0 || maxy_arr.length ==0){
-        //    console.log('y does not exist')
             y_exist = false
           }
           var xexist_arr = mergeAndRemoveDuplicates([minx_arr,maxx_arr]);
@@ -1692,20 +1693,27 @@ exports.findOrCreate = async(req, res) => {
           if(!y_exist){
             yexist_arr = [] 
           }
-         // console.log(xexist_arr, yexist_arr)
-          var arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
-          //console.log('final')
-         // console.log(arr_2[0])
-      //  var bigarray = mergeAndRemoveDuplicates([xexist_arr,yexist_arr]);
+       //   console.log(minx_arr2, maxx_arr2,miny_arr2,maxy_arr2)
+
+
+          var arr_2 = [];
+          arr_2 = removeAllDuplicates([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          if (arr_2.length === 0){
+           // console.log('all matching so remove dups')
+            arr_2 = removeDuplicateArrays([minx_arr, maxx_arr, miny_arr, maxy_arr])
+          }
         var bigarray= arr_2[0]
-       //   console.log(bigarray)
       if (bigarray.length == 0) {
         return res.status(200).json({ message: 'Metadata not found' });
       }
       else{
         MetaData.findAll({
           attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','language','version','publisher_id','is_restricted','is_checked','createdAt','updatedAt'],
-          where:{id:bigarray},
+          where:{id:bigarray,
+              '$data_type.datatype_code$': {
+                [Op.iLike]: `%${req.query.datatype}%`// Condition 2: Posts with titles containing 'JavaScript'
+              }
+          },
           order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
           include: [
             {
@@ -1713,22 +1721,8 @@ exports.findOrCreate = async(req, res) => {
               attributes: ['id','datatype_code'],
             },
             {
-              model: db.parameter,
-              attributes: ['short_name','standard_name','long_name','units','uri'],
-              through:{ attributes:[]}
-            },
-            {
               model: Country,
               attributes: ['country_code','country_name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: Spatial_projection,
-              attributes: ['name'],
-            },
-            {
-              model: db.spatial_extent,
-              attributes:['value','extent_name'],
               through:{ attributes:[]}
             },
             {
@@ -1742,39 +1736,6 @@ exports.findOrCreate = async(req, res) => {
             {
               model: db.contact,
               attributes: ['id','first_name','last_name','position','email'],
-            },
-            {
-              model: db.user,
-              attributes: ['id',"first_name", "last_name","email","country_id"],
-            },
-            {
-              model: db.flag,
-              attributes: ['id',"name"],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.tag,
-              attributes: ['id','name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.topic,
-              attributes: ['id','name'],
-              through:{ attributes:[]}
-            },
-            {
-              model: db.sourceurl,
-              attributes: ['value','url_name','is_restricted'],
-              required: false,
-              through:{ attributes:[]},
-              where:{
-                is_restricted: {
-                [Op.ne]: true
-              }}
-            },
-            {
-              model: License,
-              attributes: ['short_name','name','url'],
             },
           ]
         })
