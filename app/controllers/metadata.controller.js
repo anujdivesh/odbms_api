@@ -17,7 +17,7 @@ const Sequelize = db.Sequelize.Sequelize;
 // Retrieve all Tutorials from the database.
 exports.getListing = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{is_checked:true},
     include: [
@@ -57,7 +57,7 @@ exports.getListing = (req, res) => {
 };
 exports.getListingauth = (req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','version','is_restricted','is_checked','createdAt'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     include: [
       {
@@ -96,7 +96,7 @@ exports.getListingauth = (req, res) => {
 };
 exports.getListingTitle = async(req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{
       [Op.and]: [
@@ -116,7 +116,10 @@ exports.getListingTitle = async(req, res) => {
         },
         {
           '$parameters.short_name$': {
-            [Op.like]: `%${req.body.parameters}%` // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.parameters}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         },
         {
@@ -195,7 +198,7 @@ exports.getListingTitle = async(req, res) => {
 
 exports.getListingTitleauth = async(req, res) => {
   MetaData.findAll({
-    attributes: ['id','title','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
+    attributes: ['id','title','description','temporal_coverage_from','temporal_coverage_to','version','is_restricted'],
     order: [['createdAt', 'DESC']], // Assuming createdAt is the timestamp of creation
     where:{
       [Op.and]: [
@@ -212,7 +215,10 @@ exports.getListingTitleauth = async(req, res) => {
         },
         {
           '$parameters.short_name$': {
-            [Op.like]: `%${req.body.parameters}%` // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.parameters}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         },
         {
