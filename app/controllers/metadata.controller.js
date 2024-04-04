@@ -31,6 +31,11 @@ exports.getListing = (req, res) => {
         through:{ attributes:[]}
       },
       {
+        model: db.spatial_extent,
+        attributes:['value','extent_name'],
+        through:{ attributes:[]}
+      },
+      {
         model: Project,
         attributes: ['id','project_code','project_name'],
       },
@@ -67,6 +72,11 @@ exports.getListingauth = (req, res) => {
       {
         model: Country,
         attributes: ['country_code','country_name'],
+        through:{ attributes:[]}
+      },
+      {
+        model: db.spatial_extent,
+        attributes:['value','extent_name'],
         through:{ attributes:[]}
       },
       {
@@ -149,6 +159,11 @@ exports.getListingTitle = async(req, res) => {
         model: db.parameter,
         attributes: ['short_name','standard_name','long_name','units','uri'],
         required:false,
+        through:{ attributes:[]}
+      },
+      {
+        model: db.spatial_extent,
+        attributes:['value','extent_name'],
         through:{ attributes:[]}
       },
       {
@@ -248,6 +263,11 @@ exports.getListingTitleauth = async(req, res) => {
         model: db.parameter,
         attributes: ['short_name','standard_name','long_name','units','uri'],
         required:false,
+        through:{ attributes:[]}
+      },
+      {
+        model: db.spatial_extent,
+        attributes:['value','extent_name'],
         through:{ attributes:[]}
       },
       {
