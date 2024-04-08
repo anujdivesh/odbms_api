@@ -139,12 +139,18 @@ exports.getListingTitle = async(req, res) => {
         },
         {
           '$tags.name$': {
-            [Op.like]: `%${req.body.tag}%` // Condition 2: Posts with tixtles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.tag}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         },
         {
           '$topics.name$': {
-            [Op.like]: `%${req.body.topic}%` // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.topic}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         }
       ]
@@ -243,12 +249,18 @@ exports.getListingTitleauth = async(req, res) => {
         },
         {
           '$tags.name$': {
-            [Op.like]: `%${req.body.tag}%` // Condition 2: Posts with tixtles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.tag}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         },
         {
           '$topics.name$': {
-            [Op.like]: `%${req.body.topic}%` // Condition 2: Posts with titles containing 'JavaScript'
+            [Op.or]: [
+              { [Op.like]: `%${req.body.topic}%` }, // Matches pattern
+              { [Op.is]: null } // OR is NULL
+            ]
           }
         }
       ]
